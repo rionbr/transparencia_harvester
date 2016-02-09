@@ -1,10 +1,10 @@
 Transparencia Harvester
 =======================
 
-A tool to harvester the Brazilian (Portal da Transparencia)[http://www.portaldatransparencia.gov.br/] from the Open Data Portal of the Federal Government.
+A tool to harvester the Brazilian [Portal da Transparencia](http://www.portaldatransparencia.gov.br/) from the Open Data Portal of the Federal Government.
 
 Why do we need this?
-Because the download function does not have all the information science would expect.
+Because the website's download function does not have all the information science would expect.
 
 What does this do?
 Harvesters (scrapes the pages) and inserts into a MySQL database.
@@ -13,9 +13,9 @@ Harvesters (scrapes the pages) and inserts into a MySQL database.
 How to Harvest
 --------------
 
-### Step 1: Create the MySQL tables (see statements below).
+- Step 1: Create the MySQL tables (see statements below).
 
-### Step 2: Populate `orgao_superior` (aka Ministérios)
+- Step 2: Populate `orgao_superior` (aka Ministérios)
 
 ```python
 from orgao_superior import OrgaoSuperior
@@ -23,7 +23,7 @@ from orgao_superior import OrgaoSuperior
 OrgaoSuperior(verbose=True).harvest()
 ```
 
-### Step 3: Populate `orgao` (aka Instituições)
+- Step 3: Populate `orgao` (aka Instituições)
 
 Here you have to give the number of the [O]rgao [S]uperior you want to collect.
 In the example below `15000` is the 'Ministério da Educação'.
@@ -33,7 +33,7 @@ from orgao import Orgao
 Orgao(verbose=True).harvest(codOS=15000)
 ```
 
-### Step 4: Populate `servidor` (aka Trabalhadores)
+- Step 4: Populate `servidor` (aka Trabalhadores)
 
 First, get the list of `orgao` you want to fill in with workers.
 Then look through all of them and retrieve the general information for every worker.
@@ -54,7 +54,7 @@ for id_orgao, dft in dfO.iterrows():
 ```
 Note: DF stands for Pandas DataFrame.
 
-### Step 5: Populate `cargo` (optional: aka position)
+- Step 5: Populate `cargo` (optional: aka position)
 
 STILL NOT 100%
 
@@ -68,7 +68,7 @@ This process may take a lof time depending on how much data you want.
 
 
 
-### Step 6: Populate `remuneracao` (optional; aka finances)
+- Step 6: Populate `remuneracao` (optional; aka finances)
 
 
 
@@ -174,3 +174,9 @@ CREATE TABLE servidor_remuneracao
 	FOREIGN KEY (id_servidor) REFERENCES servidor(id_servidor) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=INNODB;
 ```
+
+Todo:
+######
+
+A lot of stuff. If you want to contribute, get in touch with me on `rionbr a@t gmail d.t com`.
+;)
