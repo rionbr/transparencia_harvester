@@ -161,7 +161,7 @@ class Servidor(object):
 		#status = DB().DataFrameToMySQL(df, table='servidor_cargos')
 	
 
-	def harvest_financeiro(self, id_servidor):
+	def harvest_finance(self, id_servidor):
 
 		now = datetime.now()
 		year, month = now.strftime("%Y-%m").split('-')
@@ -233,14 +233,16 @@ if __name__ != '__main__':
 	from orgao import Orgao
 	dfO = Orgao().getDF()
 
+	KeepLooping = False
 	for id_orgao, dft in dfO.iterrows():
-
-		ans = raw_input(u'Harvest `%s`? [y/n]:' % dft['name'])
-		if ans == 'y':
+		print '- %s' % dft['name']
+		if not KeepLooping:
+			ans = raw_input(u'Harvest it? [a/y/n]:')
+			if ans == 'a':
+				KeepLooping = True
+		if (KeepLooping or ans == 'y'):
 			s = Servidor(verbose=True)
-			s.harvest(id_orgao=id_orgao)	
-		else:
-			print 'Skipping Orgao'
+			s.harvest(id_orgao=id_orgao)
 	"""
 	#
 	# Harvest Cargos for Servidores
@@ -251,25 +253,29 @@ if __name__ != '__main__':
 	for (id_servidor, id_orgao), dft in dfS.iterrows():
 		s.harvest_cargos(id_servidor=id_servidor, id_orgao=id_orgao)
 	"""
-
-	Servidor().harvest_cargos(id_servidor=1000770, id_orgao=15000)
+	#Servidor().harvest_cargos(id_servidor=1000770, id_orgao=15000)
 
 
 	#
 	# Harvest Financeiro for Servidores
 	#
-	"""
+	
 	from orgao import Orgao
 	from servidor import Servidor
 
 	dfO = Orgao().getDF()
-
+	KeepLooping = False
 	for id_orgao, dfot in dfO.iterrows():
-		ans = raw_input(u'Harvest financials from `%s` servidores? [y/n]:' % dft['name'])
-		if ans == 'y':
+		print '- %s' % dfot['name']
+		
+		if not KeepLooping:
+			ans = raw_input(u'Harvest their financials? [a/y/n]:')
+			if ans == 'a':
+				KeepLooping = True
+		if (KeepLooping or ans == 'y'):
 			dfS = Servidor().getDFServidor()
+			
 			for id_servidor, dfst in dfS.iterrows():
-				Servidor(verbose=True).harvest_financeiro(id_servidor=id_servidor)
-		else:
-			print 'Skipping Orgao'
-	"""
+				Servidor(verbose=True).harvest_finance(id_servidor=id_servidor)
+	
+

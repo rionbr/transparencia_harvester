@@ -33,7 +33,7 @@ from orgao import Orgao
 Orgao(verbose=True).harvest(codOS=15000)
 ```
 
-- Step 4: Populate `servidor` (aka Trabalhadores)
+- Step 4: Populate `servidor`
 
 First, get the list of `orgao` you want to fill in with workers.
 Then look through all of them and retrieve the general information for every worker.
@@ -43,49 +43,50 @@ You might want to have an input to help on the process (see below).
 from orgao import Orgao
 dfO = Orgao().getDF()
 
+KeepLooping = False
 for id_orgao, dft in dfO.iterrows():
-
-	ans = raw_input(u'Harvest `%s`? [y/n]:' % dft['name'])
-	if ans == 'y':
+	print '- %s' % dft['name']
+	if not KeepLooping:
+		ans = raw_input(u'Harvest it? [a/y/n]:')
+		if ans == 'a':
+			KeepLooping = True
+	if (KeepLooping or ans == 'y'):
 		s = Servidor(verbose=True)
-		s.harvest(id_orgao=id_orgao)	
-	else:
-		print 'Skipping Orgao'
+		s.harvest(id_orgao=id_orgao)
 ```
 Note: DF stands for Pandas DataFrame.
 
 - Step 5: Populate `cargo` (optional: aka position)
 
-STILL NOT 100%
-
-```python
-TODO
-```
+STILL NOT 100%! Needs more dev/test. There are a lot of inconsistencies with the html tags on the portal.
 
 Note: a worker may have more than one position.
 He can also be allocated in a different `orgao` than that of his initial contract.
 This process may take a lof time depending on how much data you want.
 
 
-
 - Step 6: Populate `remuneracao` (optional; aka finances)
 
-
+This loops through every servidor and requests their `salario_bruto` for the last 6 months -- or max available.
 
 ```python
 from orgao import Orgao
 from servidor import Servidor
 
 dfO = Orgao().getDF()
-
+KeepLooping = False
 for id_orgao, dfot in dfO.iterrows():
-	ans = raw_input(u'Harvest financials from `%s` servidores? [y/n]:' % dft['name'])
-	if ans == 'y':
+	print '- %s' % dfot['name']
+	
+	if not KeepLooping:
+		ans = raw_input(u'Harvest their financials? [a/y/n]:')
+		if ans == 'a':
+			KeepLooping = True
+	if (KeepLooping or ans == 'y'):
 		dfS = Servidor().getDFServidor()
+		
 		for id_servidor, dfst in dfS.iterrows():
-			Servidor(verbose=True).harvest_financeiro(id_servidor=id_servidor)
-	else:
-		print 'Skipping Orgao'
+			Servidor(verbose=True).harvest_finance(id_servidor=id_servidor)
 ```
 
 Note: this process may take a lot of time, depending on how much data you want.
@@ -176,7 +177,8 @@ CREATE TABLE servidor_remuneracao
 ```
 
 Todo:
-######
+=======
 
 A lot of stuff. If you want to contribute, get in touch with me on `rionbr a@t gmail d.t com`.
+
 ;)

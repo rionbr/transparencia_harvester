@@ -3,7 +3,7 @@
 DB Connection
 ===================
 
-description
+MySQL Database connection methods
 """
 #    Copyright (C) 2016 by
 #    Rion Brattig Correia <rionbr@gmail.com>
